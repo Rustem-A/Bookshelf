@@ -13,7 +13,9 @@ class Main extends React.Component {
             authors: [],
             totalPriceAutorBooks: 0,
             booksWithoutAuthors: [],
-            active: true,
+            activeButton: false,
+            activeBooks: false,
+            activeAuthors: false,
         };
     };
 
@@ -50,6 +52,7 @@ class Main extends React.Component {
                 .then(authors => {
                     this.setState({ currentBookAuthors: authors });
                 });
+                this.setState({activeButton: false, activeBooks: true, activeAuthors: false});
         }
     }
 
@@ -62,14 +65,16 @@ class Main extends React.Component {
                 .then(price => {
                     this.setState({ totalPriceAutorBooks: price });
                 });
+                this.setState({activeButton: false, activeBooks: false, activeAuthors: true});
         }
     };
 
     handleClickOnButton = (e) => {
-        this.setState({active: !this.state.active});
+        this.setState({activeButton: !this.state.activeButton, activeBooks: false, activeAuthors: false});
     };
 
     renderAuthors() {
+        if (this.state.currentBookAuthors.length !== 0) {
         return this.state.currentBookAuthors.map(author => {
             return (
                 <div key={author.id}>
@@ -79,17 +84,19 @@ class Main extends React.Component {
                 </div>   
             );
         })
+    } else {
+        return <h5>This book does not have an assigned authors</h5>
+    }
     }
     renderBooksWithoutAuthors() {
         return this.state.booksWithoutAuthors.map(book => {
             return (
-                <p key={book.id}>{ book.title }</p>     
+                <h5 key={book.id}><p>{ book.title }</p></h5>  
             );
         })
     }
     render() {
         const {books} = this.state;
-        const {booksWithoutAuthors} = this.state;
         return (
             <div className="container">
                 <div className="row justify-content-center">
@@ -101,16 +108,20 @@ class Main extends React.Component {
                                 <div className="card-body">
                                     <div className="card">
                                         <div className="btn-group">
-                                            <button onClick={this.handleClickOnButton} type="button" className="btn btn-primary">Books without authors</button>
+                                            <button onClick={this.handleClickOnButton} type="button" className="btn btn-primary">Show books without authors</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="card-body">
-                                {this.renderAuthors()}
-                                {this.state.totalPriceAutorBooks}
-                                <div hidden={this.state.active}>
-                                    {this.renderBooksWithoutAuthors()}
+                                <div >
+                                    {this.state.activeBooks? this.renderAuthors(): ''}
+                                </div>
+                                <div >
+                                    {this.state.activeAuthors? <p>All books by this author cost <b>{this.state.totalPriceAutorBooks}</b> rubles</p>: ''}
+                                </div>
+                                <div >
+                                    {this.state.activeButton? this.renderBooksWithoutAuthors(): ''}
                                 </div>
                             </div>
                         </div>

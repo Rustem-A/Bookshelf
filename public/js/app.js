@@ -66657,6 +66657,12 @@ var Main = /*#__PURE__*/function (_React$Component) {
               currentBookAuthors: authors
             });
           });
+
+          _this.setState({
+            activeButton: false,
+            activeBooks: true,
+            activeAuthors: false
+          });
         }
       };
     });
@@ -66671,13 +66677,21 @@ var Main = /*#__PURE__*/function (_React$Component) {
               totalPriceAutorBooks: price
             });
           });
+
+          _this.setState({
+            activeButton: false,
+            activeBooks: false,
+            activeAuthors: true
+          });
         }
       };
     });
 
     _defineProperty(_assertThisInitialized(_this), "handleClickOnButton", function (e) {
       _this.setState({
-        active: !_this.state.active
+        activeButton: !_this.state.activeButton,
+        activeBooks: false,
+        activeAuthors: false
       });
     });
 
@@ -66687,7 +66701,9 @@ var Main = /*#__PURE__*/function (_React$Component) {
       authors: [],
       totalPriceAutorBooks: 0,
       booksWithoutAuthors: [],
-      active: true
+      activeButton: false,
+      activeBooks: false,
+      activeAuthors: false
     };
     return _this;
   }
@@ -66722,30 +66738,33 @@ var Main = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "renderAuthors",
     value: function renderAuthors() {
-      return this.state.currentBookAuthors.map(function (author) {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          key: author.id
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("b", null, author.name))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          style: {
-            color: 'blue'
-          }
-        }, "About author:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, author.information), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null));
-      });
+      if (this.state.currentBookAuthors.length !== 0) {
+        return this.state.currentBookAuthors.map(function (author) {
+          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+            key: author.id
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("b", null, author.name))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+            style: {
+              color: 'blue'
+            }
+          }, "About author:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, author.information), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null));
+        });
+      } else {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", null, "This book does not have an assigned authors");
+      }
     }
   }, {
     key: "renderBooksWithoutAuthors",
     value: function renderBooksWithoutAuthors() {
       return this.state.booksWithoutAuthors.map(function (book) {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
           key: book.id
-        }, book.title);
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, book.title));
       });
     }
   }, {
     key: "render",
     value: function render() {
       var books = this.state.books;
-      var booksWithoutAuthors = this.state.booksWithoutAuthors;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -66772,11 +66791,9 @@ var Main = /*#__PURE__*/function (_React$Component) {
         onClick: this.handleClickOnButton,
         type: "button",
         className: "btn btn-primary"
-      }, "Books without authors"))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, "Show books without authors"))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "card-body"
-      }, this.renderAuthors(), this.state.totalPriceAutorBooks, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        hidden: this.state.active
-      }, this.renderBooksWithoutAuthors()))))));
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.state.activeBooks ? this.renderAuthors() : ''), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.state.activeAuthors ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "All books by this author cost ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("b", null, this.state.totalPriceAutorBooks), " rubles") : ''), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.state.activeButton ? this.renderBooksWithoutAuthors() : ''))))));
     }
   }]);
 
