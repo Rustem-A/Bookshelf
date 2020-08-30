@@ -66495,6 +66495,55 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
+/***/ "./resources/js/components/Author.js":
+/*!*******************************************!*\
+  !*** ./resources/js/components/Author.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var Author = function Author(props) {
+  console.log(props);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "container"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row justify-content-center"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-8"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "card-body"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "btn-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    type: "button",
+    className: "btn btn-primary dropdown-toggle",
+    "data-toggle": "dropdown",
+    "aria-haspopup": "true",
+    "aria-expanded": "false"
+  }, "Authors"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "dropdown-menu"
+  }, props.authors.map(function (author) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+      key: author.id,
+      onClick: props.getTotalPrice(author.id),
+      className: "dropdown-item",
+      href: "#"
+    }, author.name);
+  })))))))));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Author);
+
+/***/ }),
+
 /***/ "./resources/js/components/Book.js":
 /*!*****************************************!*\
   !*** ./resources/js/components/Book.js ***!
@@ -66508,7 +66557,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 
 
-var Main = function Main(props) {
+var Book = function Book(props) {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "container"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -66529,20 +66578,17 @@ var Main = function Main(props) {
     "aria-expanded": "false"
   }, "Books"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "dropdown-menu"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-    className: "dropdown-item",
-    href: "#"
-  }, "Action"), props.books.map(function (book) {
+  }, props.books.map(function (book) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
       key: book.id,
-      onClick: props.mainAuthors(book.id),
+      onClick: props.getAuthors(book.id),
       className: "dropdown-item",
       href: "#"
     }, book.title);
   })))))))));
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (Main);
+/* harmony default export */ __webpack_exports__["default"] = (Book);
 
 /***/ }),
 
@@ -66560,6 +66606,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _Book__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Book */ "./resources/js/components/Book.js");
+/* harmony import */ var _Author__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Author */ "./resources/js/components/Author.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -66583,6 +66630,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -66614,9 +66662,25 @@ var Main = /*#__PURE__*/function (_React$Component) {
       };
     });
 
+    _defineProperty(_assertThisInitialized(_this), "handleClickOnAuthor", function (authorId) {
+      return function (e) {
+        if (authorId) {
+          fetch("/api/authors/".concat(authorId, "/books/total_price")).then(function (response) {
+            return response.json();
+          }).then(function (price) {
+            _this.setState({
+              totalPriceAutorBooks: price
+            });
+          });
+        }
+      };
+    });
+
     _this.state = {
       books: [],
-      currentBookAuthors: []
+      currentBookAuthors: [],
+      authors: [],
+      totalPriceAutorBooks: 0
     };
     return _this;
   }
@@ -66631,6 +66695,13 @@ var Main = /*#__PURE__*/function (_React$Component) {
       }).then(function (items) {
         _this2.setState({
           books: items
+        });
+      });
+      fetch("/api/authors").then(function (response) {
+        return response.json();
+      }).then(function (items) {
+        _this2.setState({
+          authors: items
         });
       });
     }
@@ -66662,10 +66733,13 @@ var Main = /*#__PURE__*/function (_React$Component) {
         className: "card-header"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Book__WEBPACK_IMPORTED_MODULE_2__["default"], {
         books: this.state.books,
-        mainAuthors: this.handleClickOnBook
+        getAuthors: this.handleClickOnBook
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Author__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        authors: this.state.authors,
+        getTotalPrice: this.handleClickOnAuthor
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "card-body"
-      }, this.renderAuthors())))));
+      }, this.renderAuthors(), this.state.totalPriceAutorBooks)))));
     }
   }]);
 

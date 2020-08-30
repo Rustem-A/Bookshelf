@@ -22,3 +22,4 @@ Route::resource('/books', 'BookController');
 Route::resource('/authors', 'AuthorController');
 
 Route::get('/books/{book}/authors', 'BookController@authors');
+Route::get('/authors/{author}/books/total_price', 'AuthorController@totalPrice');

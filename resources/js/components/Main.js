@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import Book from './Book';
+import Author from './Author';
 
 class Main extends React.Component {
     constructor(props) {
@@ -9,6 +10,8 @@ class Main extends React.Component {
         this.state = {
             books: [],
             currentBookAuthors: [],
+            authors: [],
+            totalPriceAutorBooks: 0,
         };
     };
 
@@ -20,8 +23,15 @@ class Main extends React.Component {
             .then(items => {
             this.setState({ books: items });
             });
+        fetch(`/api/authors`)
+            .then(response => {
+                return response.json();
+            })
+            .then(items => {
+            this.setState({ authors: items });
+            });
     };
-
+    
     handleClickOnBook = (bookId) => (e) => {
         if (bookId) {
             fetch(`/api/books/${bookId}/authors`)
@@ -33,6 +43,19 @@ class Main extends React.Component {
                 });
         }
     }
+
+    handleClickOnAuthor = (authorId) => (e) => {
+        if (authorId) {
+            fetch(`/api/authors/${authorId}/books/total_price`)
+                .then(response => {
+                    return response.json();
+                })
+                .then(price => {
+                    this.setState({ totalPriceAutorBooks: price });
+                });
+        }
+    }
+
     renderAuthors() {
         return this.state.currentBookAuthors.map(author => {
             return (
@@ -51,10 +74,12 @@ class Main extends React.Component {
                     <div className="col-md-8">
                         <div className="card">
                             <div className="card-header">
-                                <Book books={this.state.books} mainAuthors={this.handleClickOnBook}/>
+                                <Book books={this.state.books} getAuthors={this.handleClickOnBook}/>
+                                <Author authors={this.state.authors} getTotalPrice={this.handleClickOnAuthor}/>
                             </div>
                             <div className="card-body">
                                 {this.renderAuthors()}
+                                {this.state.totalPriceAutorBooks}
                             </div>
                         </div>
                     </div>
