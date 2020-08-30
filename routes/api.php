@@ -18,6 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/books/without_authors', 'BookController@withoutAuthors');
+
 Route::resource('/books', 'BookController');
 Route::resource('/authors', 'AuthorController');
 

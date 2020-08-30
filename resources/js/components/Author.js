@@ -1,7 +1,6 @@
 import React from 'react';
 
 const Author = (props) => {
-    console.log(props)
     return (
         <div className="container">
             <div className="row justify-content-center">

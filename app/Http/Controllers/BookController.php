@@ -22,6 +22,11 @@ class BookController extends Controller
         return Book::find($book)->authors;
     }
 
+    public function withoutAuthors()
+    {
+        return Book::doesntHave('authors')->get();
+    }
+
     /**
      * Show the form for creating a new resource.
      *

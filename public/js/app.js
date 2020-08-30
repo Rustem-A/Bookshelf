@@ -66509,7 +66509,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var Author = function Author(props) {
-  console.log(props);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "container"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -66676,11 +66675,19 @@ var Main = /*#__PURE__*/function (_React$Component) {
       };
     });
 
+    _defineProperty(_assertThisInitialized(_this), "handleClickOnButton", function (e) {
+      _this.setState({
+        active: !_this.state.active
+      });
+    });
+
     _this.state = {
       books: [],
       currentBookAuthors: [],
       authors: [],
-      totalPriceAutorBooks: 0
+      totalPriceAutorBooks: 0,
+      booksWithoutAuthors: [],
+      active: true
     };
     return _this;
   }
@@ -66704,6 +66711,13 @@ var Main = /*#__PURE__*/function (_React$Component) {
           authors: items
         });
       });
+      fetch("/api/books/without_authors").then(function (response) {
+        return response.json();
+      }).then(function (items) {
+        _this2.setState({
+          booksWithoutAuthors: items
+        });
+      });
     }
   }, {
     key: "renderAuthors",
@@ -66719,8 +66733,19 @@ var Main = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
+    key: "renderBooksWithoutAuthors",
+    value: function renderBooksWithoutAuthors() {
+      return this.state.booksWithoutAuthors.map(function (book) {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+          key: book.id
+        }, book.title);
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
+      var books = this.state.books;
+      var booksWithoutAuthors = this.state.booksWithoutAuthors;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -66732,14 +66757,26 @@ var Main = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "card-header"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Book__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        books: this.state.books,
+        books: books,
         getAuthors: this.handleClickOnBook
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Author__WEBPACK_IMPORTED_MODULE_3__["default"], {
         authors: this.state.authors,
         getTotalPrice: this.handleClickOnAuthor
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "card-body"
-      }, this.renderAuthors(), this.state.totalPriceAutorBooks)))));
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "card"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "btn-group"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        onClick: this.handleClickOnButton,
+        type: "button",
+        className: "btn btn-primary"
+      }, "Books without authors"))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "card-body"
+      }, this.renderAuthors(), this.state.totalPriceAutorBooks, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        hidden: this.state.active
+      }, this.renderBooksWithoutAuthors()))))));
     }
   }]);
 

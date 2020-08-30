@@ -12,6 +12,8 @@ class Main extends React.Component {
             currentBookAuthors: [],
             authors: [],
             totalPriceAutorBooks: 0,
+            booksWithoutAuthors: [],
+            active: true,
         };
     };
 
@@ -29,6 +31,13 @@ class Main extends React.Component {
             })
             .then(items => {
             this.setState({ authors: items });
+            });
+        fetch(`/api/books/without_authors`)
+            .then(response => {
+                return response.json();
+            })
+            .then(items => {
+            this.setState({ booksWithoutAuthors: items });
             });
     };
     
@@ -54,7 +63,11 @@ class Main extends React.Component {
                     this.setState({ totalPriceAutorBooks: price });
                 });
         }
-    }
+    };
+
+    handleClickOnButton = (e) => {
+        this.setState({active: !this.state.active});
+    };
 
     renderAuthors() {
         return this.state.currentBookAuthors.map(author => {
@@ -67,19 +80,38 @@ class Main extends React.Component {
             );
         })
     }
+    renderBooksWithoutAuthors() {
+        return this.state.booksWithoutAuthors.map(book => {
+            return (
+                <p key={book.id}>{ book.title }</p>     
+            );
+        })
+    }
     render() {
+        const {books} = this.state;
+        const {booksWithoutAuthors} = this.state;
         return (
             <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-md-8">
                         <div className="card">
                             <div className="card-header">
-                                <Book books={this.state.books} getAuthors={this.handleClickOnBook}/>
+                                <Book books={books} getAuthors={this.handleClickOnBook}/>
                                 <Author authors={this.state.authors} getTotalPrice={this.handleClickOnAuthor}/>
+                                <div className="card-body">
+                                    <div className="card">
+                                        <div className="btn-group">
+                                            <button onClick={this.handleClickOnButton} type="button" className="btn btn-primary">Books without authors</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div className="card-body">
                                 {this.renderAuthors()}
                                 {this.state.totalPriceAutorBooks}
+                                <div hidden={this.state.active}>
+                                    {this.renderBooksWithoutAuthors()}
+                                </div>
                             </div>
                         </div>
                     </div>
