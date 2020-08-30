@@ -14,7 +14,12 @@ class BookController extends Controller
      */
     public function index()
     {
-        //
+        return Book::all();
+    }
+
+    public function authors($book)
+    {
+        return Book::find($book)->authors;
     }
 
     /**
