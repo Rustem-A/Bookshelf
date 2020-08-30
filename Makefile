@@ -9,4 +9,6 @@ install:
 	 npm run dev
 	 php artisan serve
 push:
-	git push -u origin master
+	 git push -u origin master
+seedref:
+	 php artisan migrate:refresh --seed
